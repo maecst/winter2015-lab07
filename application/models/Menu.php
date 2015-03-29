@@ -4,6 +4,7 @@
  * This is a model for a restaurant menu that is populated from XML data.
  *
  * @author jim
+ * @author maecst
  */
 class Menu extends CI_Model {
 
