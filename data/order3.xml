@@ -6,7 +6,7 @@ to satisfy the requirements.  She wants five toppings.
 
 <!DOCTYPE order SYSTEM 'bonanza.dtd'>
 
-<order type="eatin">
+<order type="delivery">
     <customer>Mae</customer>
     <burger>
         <patty type="beef"/>
@@ -29,4 +29,10 @@ to satisfy the requirements.  She wants five toppings.
         <sauce type="mustard"/>
         <instructions>Please add peanut butter</instructions>
     </burger>
+    <delivery>
+        3700 Willingdon Avenue, Burnaby
+    </delivery>
+    <special>
+        Bring to building SE12 Room 319
+    </special>
 </order>
