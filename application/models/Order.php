@@ -80,6 +80,4 @@ class Order extends CI_Model {
 
         return $order;
     }
-    
-    
 }
