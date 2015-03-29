@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This is a custom order for Mae who doesn't eat cheese but will add it anyway
+to satisfy the requirements.  She wants five toppings.
+-->
+
+<!DOCTYPE order SYSTEM 'bonanza.dtd'>
+
+<order type="eatin">
+    <customer>Mae</customer>
+    <burger>
+        <patty type="beef"/>
+        <cheeses top="swiss"/>
+        <topping type="lettuce"/>
+        <topping type="shrooms"/>
+        <topping type="salsa"/>
+        <topping type="avocado"/>
+        <topping type="bacon"/>
+        <sauce type="fksauce"/>
+        <sauce type="mayo"/>
+    </burger>
+    <burger>
+        <patty type="pork"/>
+        <cheeses top="gouda"/>
+        <topping type="lettuce"/>
+        <topping type="dill"/>
+        <topping type="tomato"/>
+        <sauce type="ketchup"/>
+        <sauce type="mustard"/>
+        <instructions>Please add peanut butter</instructions>
+    </burger>
+</order>
