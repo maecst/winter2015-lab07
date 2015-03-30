@@ -39,18 +39,24 @@ class Welcome extends Application {
             if ($path_parts['extension'] == strtolower('xml') && $matching)
             {
                 //echo 'file:     ' . $file . '<br>';
-                //$customer = $this->order->getOrder($file_name)['customer'];
+                $customer = $this->order->getOrder($file_name)['customer'];
                 $xml_orders[] = array(
-                    //'filename' => $file_name, 
-                    //'order'    => $file_name . " ($customer)"
-                    'order' => $file
-                );
+                    'order' => ucfirst($file_name),
+                    'customer' => $customer
+                 );
             }    
         }
+        
+        //var_dump($xml_orders);
 
+        //$order = $this->order->getOrder($file_name);
+        
         // Present the list to choose from
-        $this->data['orders'] = $xml_orders;
         $this->data['pagebody'] = 'homepage';
+        
+        $this->data['orders'] = $xml_orders;
+        //$this->data['filename'] = $file_name;
+        //$this->data['customer'] = $customer;
         $this->render();
     }
     
@@ -72,6 +78,7 @@ class Welcome extends Application {
         $this->data['special'] = $order['special'];
         $this->data['type'] = $order['type'];
         $this->data['burgers'] = $burgers;
+        //$this->data['total'] = $order['total'];
 
         $this->render();
     }

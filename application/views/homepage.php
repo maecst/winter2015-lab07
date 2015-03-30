@@ -3,7 +3,7 @@
        
     <ul>
         {orders}
-        <li><a href="/welcome/order/{filename}"> Order #{filename} for {customer}  </a></li>
+        <li><a href="/welcome/order/{order}"> {order} for {customer}  </a></li>
         {/orders}
     </ul>
     

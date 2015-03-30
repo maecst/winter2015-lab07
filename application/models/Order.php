@@ -8,6 +8,7 @@
 class Order extends CI_Model {
 
     protected $xml = null;
+    protected $order_total = 0.0;
 
     // Constructor
     public function __construct() {
@@ -17,8 +18,10 @@ class Order extends CI_Model {
     // retrieve burger info from corresponding xml file
     function getBurgers($file) {
         
-        $this->xml = simplexml_load_file(DATAPATH . 'order' . $file . '.xml');
+        $this->xml = simplexml_load_file(DATAPATH . $file . '.xml');
         $count = 0;
+        
+        $burger_price = 0.0;
 
         $order = array();
         $burgers = $this->xml->burger;
@@ -26,17 +29,29 @@ class Order extends CI_Model {
         foreach ($burgers as $b)
         {
             $burger = array();
+            $patty = $this->menu->getPatty((string)$b->patty['type']);
+            $t_cheese = $this->menu->getCheese((string)$b->cheeses['top']);
+            $b_cheese = $this->menu->getCheese((string)$b->cheeses['bottom']);
             $toppings = "";
             $sauces = "";
             $instructions = $b->instructions;
             
+            $burger_price += (float)$patty->price;
+            $burger_price += (float) $t_cheese->price;
+            $burger_price += (float) $t_cheese->price;
+            
             // populate lists for toppings and sauces
             foreach ($b->topping as $topping) {               
                 $toppings .= $topping['type'] . ', ';
+                $burger_price += $topping['price'];
             }
+                
             foreach ($b->sauce as $sauce) {
-                $sauces .= $sauce['type'] . ', '; 
+                $sauces .= $sauce['type'] . ', ';
+                $burger_price += $sauce['price'];
             }
+            
+
             
             // remove the last comma and space
             $toppings = substr($toppings, 0, -2);
@@ -50,6 +65,7 @@ class Order extends CI_Model {
             if ($instructions == "")
                     $instructions = "(none)";
             
+            $this->order_total += $burger_price;
             
             $burger['count'] = ++$count;
             $burger['patty'] = $b->patty['type'];
@@ -59,6 +75,7 @@ class Order extends CI_Model {
             $burger['sauces'] = $sauces;
             $burger['instructions'] = $instructions;
             $burger['name'] = $b->name;
+            $burger['total'] = $burger_price;
             
             $order[] = $burger;
         }
@@ -71,12 +88,13 @@ class Order extends CI_Model {
     {
         $order = array();
         
-        $this->xml = simplexml_load_file(DATAPATH . 'order' . $file . '.xml');
+        $this->xml = simplexml_load_file(DATAPATH . $file . '.xml');
         
         $order['customer'] = $this->xml->customer;
         $order['filename'] = $file;
         $order['type'] = $this->xml['type'];
         $order['special'] = $this->xml->special;
+        $order['total'] = $this->order_total;
 
         return $order;
     }

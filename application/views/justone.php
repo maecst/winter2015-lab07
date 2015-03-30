@@ -1,6 +1,6 @@
 <div class="row">
 
-    <h3> Order #{filename} for {customer} ({type}) </h3>
+    <h3> {filename} for {customer} ({type}) </h3>
     
     <p>Order Notes: <em>{special}</em> </p>
     
