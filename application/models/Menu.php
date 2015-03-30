@@ -47,21 +47,24 @@ class Menu extends CI_Model {
             $record->code = (string) $topping['code'];
             $record->name = (string) $topping;
             $record->price = (float) $topping['price'];
-            $this->toppings[$record->code] = $record;
+            $this->toppings[$record->code] = $record;    
         }
         
         // build a full list of sauces 
-        foreach ($this->xml->sauces->sauce as $sauce) {
+        foreach ($this->xml->sauces->sauce as $sauce) 
+        {
             $record = new stdClass();
             $record->code = (string) $sauce['code'];
             $record->name = (string) $sauce;
             $record->price = (float) $sauce['price'];
             $this->sauces[$record->code] = $record;
         }
-    }
+        
+   }    
 
     // retrieve a patty record
-    function getPatty($code) {
+    function getPatty($code) 
+   {       
         if (isset($this->patties[$code]))
             return $this->patties[$code];
         else
@@ -69,7 +72,8 @@ class Menu extends CI_Model {
     }
     
     // retrieve a cheese record
-    function getCheese($code) {
+    function getCheese($code) 
+    {
         if (isset($this->cheeses[$code]))
             return $this->cheeses[$code];
         else
@@ -77,7 +81,8 @@ class Menu extends CI_Model {
     }
     
     // retrieve a topping record
-    function getTopping($code) {
+    function getTopping($code) 
+    {  
         if (isset($this->toppings[$code]))
             return $this->toppings[$code];
         else
@@ -85,7 +90,8 @@ class Menu extends CI_Model {
     }
     
     // retrieve a sauce record
-    function getSauce($code) {
+    function getSauce($code) 
+    {
         if (isset($this->sauces[$code]))
             return $this->sauces[$code];
         else

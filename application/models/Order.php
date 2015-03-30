@@ -11,13 +11,14 @@ class Order extends CI_Model {
     protected $order_total = 0.0;
 
     // Constructor
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
     }
 
     // retrieve burger info from corresponding xml file
-    function getBurgers($file) {
-        
+    function getBurgers($file) 
+    {    
         $this->xml = simplexml_load_file(DATAPATH . $file . '.xml');
         $count = 0;
         
@@ -39,23 +40,26 @@ class Order extends CI_Model {
             $instructions = $b->instructions;            
             
             // populate lists for toppings and sauces
-            foreach ($b->topping as $topping) {             
+            foreach ($b->topping as $topping) 
+            {             
                 $a_topping = $this->menu->getTopping((string)$b->topping['type']);
                 $toppings .= $topping['type'] . ', ';
                 
-                $toppings_price = $a_topping->price;
+                if (isset($a_topping)) {
+                   $toppings_price += $a_topping->price;
+                }
             }
-                
-            foreach ($b->sauce as $sauce) {
+            foreach ($b->sauce as $sauce) 
                 $sauces .= $sauce['type'] . ', ';
-            }
-            
-            $burger_price += (float)$patty->price;
-            $burger_price += (float) $t_cheese->price;
-            $burger_price += (float) $t_cheese->price;
+
+            // get prices and update burger price
+            $burger_price += (float) $patty->price;
+            if (isset($t_cheese)) 
+                $burger_price += (float) $t_cheese->price;
+            if (isset($b_cheese))
+                $burger_price += (float) $b_cheese->price;                
             $burger_price += (float) $toppings_price;
 
-            
             // remove the last comma and space
             $toppings = substr($toppings, 0, -2);
             $sauces = substr($sauces, 0, -2);
