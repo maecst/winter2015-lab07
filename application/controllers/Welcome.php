@@ -33,12 +33,9 @@ class Welcome extends Application {
             $file_name = $path_parts['filename'];
             
             $matching = preg_match("/^[a-zA-Z]+\d+$/", $file_name);
-            //echo 'file_name:  ' . $file_name . '<br>';
-            //echo $matching . '<br>';
             
             if ($path_parts['extension'] == strtolower('xml') && $matching)
             {
-                //echo 'file:     ' . $file . '<br>';
                 $customer = $this->order->getOrder($file_name)['customer'];
                 $xml_orders[] = array(
                     'order' => ucfirst($file_name),
@@ -47,16 +44,9 @@ class Welcome extends Application {
             }    
         }
         
-        //var_dump($xml_orders);
-
-        //$order = $this->order->getOrder($file_name);
-        
         // Present the list to choose from
-        $this->data['pagebody'] = 'homepage';
-        
+        $this->data['pagebody'] = 'homepage';        
         $this->data['orders'] = $xml_orders;
-        //$this->data['filename'] = $file_name;
-        //$this->data['customer'] = $customer;
         $this->render();
     }
     
@@ -65,10 +55,15 @@ class Welcome extends Application {
     //-------------------------------------------------------------
     function order($filename)
     {
+        $order_total = 0.0;
         
         // Build a receipt for the chosen order
         $order = $this->order->getOrder($filename);
         $burgers = $this->order->getBurgers($filename);
+        
+        // calculate order total
+        foreach ($burgers as $burger)
+         $order_total += $burger['total']; 
         
         // Present the list to choose from
         $this->data['pagebody'] = 'justone';
@@ -78,10 +73,8 @@ class Welcome extends Application {
         $this->data['special'] = $order['special'];
         $this->data['type'] = $order['type'];
         $this->data['burgers'] = $burgers;
-        //$this->data['total'] = $order['total'];
+        $this->data['total'] = $order_total;
 
         $this->render();
     }
-    
-
 }

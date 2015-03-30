@@ -8,7 +8,6 @@
 class Order extends CI_Model {
 
     protected $xml = null;
-    protected $order_total = 0.0;
 
     // Constructor
     public function __construct() 
@@ -20,9 +19,9 @@ class Order extends CI_Model {
     function getBurgers($file) 
     {    
         $this->xml = simplexml_load_file(DATAPATH . $file . '.xml');
-        $count = 0;
         
-        $burger_price = 0.0;
+        $count = 0;                 // number of burgers in order
+        $burger_price = 0.0;        // cumulated price of each burger
 
         $order = array();
         $burgers = $this->xml->burger;
@@ -45,9 +44,8 @@ class Order extends CI_Model {
                 $a_topping = $this->menu->getTopping((string)$b->topping['type']);
                 $toppings .= $topping['type'] . ', ';
                 
-                if (isset($a_topping)) {
+                if (isset($a_topping))
                    $toppings_price += $a_topping->price;
-                }
             }
             foreach ($b->sauce as $sauce) 
                 $sauces .= $sauce['type'] . ', ';
@@ -71,8 +69,6 @@ class Order extends CI_Model {
                     $sauces = "(none)";
             if ($instructions == "")
                     $instructions = "(none)";
-            
-            $this->order_total += $burger_price;
             
             $burger['count'] = ++$count;
             $burger['patty'] = $b->patty['type'];
@@ -101,7 +97,6 @@ class Order extends CI_Model {
         $order['filename'] = $file;
         $order['type'] = $this->xml['type'];
         $order['special'] = $this->xml->special;
-        $order['total'] = $this->order_total;
 
         return $order;
     }
