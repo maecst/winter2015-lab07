@@ -28,29 +28,32 @@ class Order extends CI_Model {
         
         foreach ($burgers as $b)
         {
+            $toppings_price = 0.0;
+            
             $burger = array();
             $patty = $this->menu->getPatty((string)$b->patty['type']);
             $t_cheese = $this->menu->getCheese((string)$b->cheeses['top']);
             $b_cheese = $this->menu->getCheese((string)$b->cheeses['bottom']);
             $toppings = "";
             $sauces = "";
-            $instructions = $b->instructions;
-            
-            $burger_price += (float)$patty->price;
-            $burger_price += (float) $t_cheese->price;
-            $burger_price += (float) $t_cheese->price;
+            $instructions = $b->instructions;            
             
             // populate lists for toppings and sauces
-            foreach ($b->topping as $topping) {               
+            foreach ($b->topping as $topping) {             
+                $a_topping = $this->menu->getTopping((string)$b->topping['type']);
                 $toppings .= $topping['type'] . ', ';
-                $burger_price += $topping['price'];
+                
+                $toppings_price = $a_topping->price;
             }
                 
             foreach ($b->sauce as $sauce) {
                 $sauces .= $sauce['type'] . ', ';
-                $burger_price += $sauce['price'];
             }
             
+            $burger_price += (float)$patty->price;
+            $burger_price += (float) $t_cheese->price;
+            $burger_price += (float) $t_cheese->price;
+            $burger_price += (float) $toppings_price;
 
             
             // remove the last comma and space
